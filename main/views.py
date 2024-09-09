@@ -1,11 +1,10 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.shortcuts import render
 
 def show_main(request):
     context = {
-        'npm' : '2306152323',
+        'app' : 'Chicken-Daddy',
         'name': 'Christian Raphael Heryanto',
         'class': 'PBP D'
     }
