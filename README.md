@@ -1,5 +1,10 @@
 # Chicken Daddy
 Link: http://christian-raphael-chickendaddy.pbp.cs.ui.ac.id
+
+<h1>Tugas Individu</h1>
+<details>
+    <summary><h2>Tugas Individu 2</h2></summary>
+
 ## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
 ### Membuat sebuah proyek Django baru
@@ -45,6 +50,7 @@ INSTALLED_APPS = [
 'main'
 ]
 ```
+
 ### Membuat model pada aplikasi main dengan nama Product dan memiliki atribut wajib sebagai berikut: nama, price, description
 Memodifikasi file `models.py`
 ```py
@@ -96,6 +102,7 @@ dan pada HTML menggunakan templating '{{}}'
     </body>
 </html>
 ```
+
 ### Membuat sebuah routing pada `urls.py` aplikasi main untuk memetakan fungsi yang telah dibuat pada `views.py`.
 * Modifikasi `urls.py` pada direktori `main`
 ```py
@@ -135,6 +142,7 @@ git push -u origin main
 git branch -M master
 git push pws master
 ```
+
 ## Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
 ```mermaid
 flowchart TD
@@ -158,7 +166,245 @@ _User_ mengirim _request_ melalui Internet, yang diterima oleh Django. Django me
 
 ## Jelaskan fungsi git dalam pengembangan perangkat lunak!
 Git memiliki peran yang penting dalam pengembangan perangkat lunak. Git memungkinkan kolaborasi antar developer dan pengelolaan kode. Melalui Git kita juga mampu untuk mengembangkan perangkat lunak lebih teratur sebab git merupakan sebuah _version control_, yaitu praktik melacak dan mengelola perubahan pada kode perangkat lunak. 
+
 ## Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?
+
 Django merupakan sebuah framework dalam bahasa pemrograman Python. Python dikenal sebagai bahasa pemrograman yang _beginner-friendly_. Namun, Django bukan framework satu-satunya yang menggunakan Python. Keunggulan Django dibandingkan framework-framework python lainnya adalah bahwa Django merupakan framework yang memiliki skalabilitas tinggi, mendukung pengembangan cepat, memiliki struktur yang jelas, dan dibuat dengan mempertimbangan pertahanan.
+
 ## Mengapa model pada Django disebut sebagai ORM?
 Model pada Django disebut sebagai ORM (Object Relational Model) sebab Django menghubungkan objek-objek model dan tabel di relational database.
+</details>
+<details open>
+    <summary><h2>Tugas Individu 3</h2></summary>
+
+## Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+Platform dirancang untuk mengolah data. Tanpa pengimplementasian data delivery, platform tidak dapat berjalan secara maksimal dan memenuhi tujuannya. Data delivery sendiri juga harus diperhatikan kualitasnya agar dapat menyampaikan data dengan akurat dan cepat untuk menjamin pengalaman pengguna dan integritas data yang digunakan. 
+
+<br />
+
+## Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+XML (eXtensible Markup Language) & JSON (JavaScript Object Notation) memiliki keunggulannya masing-masing. XML lebih efisien dalam menyimpan data yang lebih kompleks. Walau demikian, XML memiliki readability yang lebih rendah dikarenakan mengharuskan penggunaan end tags. disisi yang lain, JSON tidak menggunakan tags sehingga lebih sederhana dan readable bagi manusia. Seperti kasus kepopuleran bahasa pemrograman Python, JSON memiliki popularitas yang tinggi sebab orang-orang cenderung memilih readibility dibandingkan efisiensi.
+
+*XML*
+```XML
+<person>
+  <name>John</name>
+  <age>30</age>
+</person>
+```
+*JSON*
+```JSON
+{
+  "name": "John",
+  "age": 30
+}
+```
+
+<br />
+
+## Jelaskan fungsi dari method `is_valid()` pada form Django dan mengapa kita membutuhkan method tersebut?
+Method `is_valid()` pada Forms digunakan untuk melakukan validasi terhadap data yang dikirimkan. Melalui validasi, developer mengurangi beberapa tahap untuk menjaga keberlangsungan web, diantaranya validasi error dan data cleaning (Proses memperbaiki/meghilangkan data-data yang salah).
+
+<br />
+
+## Mengapa kita membutuhkan `csrf_token` saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan `csrf_token` pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+CSRF (Cross-site Request Forgery) Token digenerate secara random dan di *assign* kepada tiap *user session*. Tujuan dari CSRF Token sendiri adalah untuk mencegah serangan CSRF terhadap platform. Untuk setiap form yang dikirimkan, Django akan memeriksa apakah token yang dikirimkan sesuai dengan token yang ada dalam *user session*. 
+
+Jika `csrf_token` tidak diimplementasikan dalam form django, penyerang dapat memanfaatkan pengguna yang sudah login dan mengirimkan permintaan ke server tanpa pengetahuan pengguna. Sebagai contoh, penyerang dapat membuat halaman palsu yang secara otomatis mengirimkan *POST request* kepada server. Ketika pengguna mengunjungi halaman tersebut, server akan memproses permintaan seakan-akan permintaan tersebut berasal dari pengguna.
+
+<br />
+
+![image](https://github.com/user-attachments/assets/e455b28f-1b92-4239-8b8d-d354831710cd)
+
+## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+Disclaimer: Direktori saat ini (".") adalah ROOT
+
+### Membuat template general, `./templates/base.html`
+```HTML
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block meta %} {% endblock meta %}
+  </head>
+
+  <body>
+    {% block content %} {% endblock content %}
+  </body>
+</html>
+```
+Notes:
+  - {% … %} - Django Template Tags
+
+Papda tahap ini kita membuat template seperti diatas. `{% load static %}` (baris) bertanggung jawab untuk menggunakan static files (e.g. images, JavaScript, CSS). {% block meta %} {% endblock meta %} (baris 7) dan {% block content %} {% endblock content %} akan mensubsitusi baris tersebut dengan data yang meng-*extend* file `./templates/base.html`
+
+### Mengubah `./chickendaddy/settings.py` untuk membuat _base_ direktori pada direktori `./templates`
+```py
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'], # Tambahkan konten baris ini
+        'APP_DIRS': True,
+        ...
+    }
+]
+```
+Untuk kemudahan dan tidak perlu untuk memasukkan _full path_ dari `templates`, kita dapat mendeskripsikan **DIRS**. DIRS mendefinisikan _list_ direktori dimana Django harus mencari _template_. Kita ingin Django mencari _template_ pada direktori `templates` yang terletak pada ROOT directory. Maka, kita memasukkan:
+```py
+'DIRS': [BASE_DIR / 'templates']
+```
+Kode diatas menggunakan fitur dari modul `pathlib`. Operator `/` menggabungkan `BASE_DIR` dengan subdirektori `templates` dimana `BASE_DIR` merupakan sebuah _constant_ yang berisi path ke direktori ROOT, sehingga `BASE_DIR / 'templates'` adalah _full path_ yang mengarah pada `./templates`.
+
+### Mengubah kode berikut dalam `./main/templates/main.html` sebagai berikut:
+```HTML
+{% extends 'base.html' %}
+{% block content %}
+<h1>Welcome to {{ app }}!</h1>
+<p>{{ name }} | {{ class }}</p>
+
+{% if not products %}
+<p>Belum ada data pada database products.</p>
+{% else %}
+<table>
+  <tr>
+    <th>Product Name</th>
+    <th>Price</th>
+    <th>Description</th>
+  </tr>
+
+  {% for product in products %}
+  <tr>
+    <td>{{product.name}}</td>
+    <td>{{product.price}}</td>
+    <td>{{product.description}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:create_product_entry' %}">
+  <button>Add Product Entry</button>
+</a>
+{% endblock content %}
+```
+Notes:
+
+- {{ … }} - Django variables
+- {% … %} - Django tags
+
+`{% extends 'base.html'%}` (baris 1) mengindikasikan bahwa template yang digunakan adalah `base.html`, dimana block-block yang dibuat pada berkas tersebut mengsubstitusi block yang ada dalam `base.html`
+
+### Membuat berkas baru yaitu `./main/forms.py`
+```py
+from django.forms import ModelForm
+from main.models import Product
+
+class ProductForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'description']
+```
+`ProductForms` _inherit_ kelas `ModelForm`. Atribut-atribut yang dimasukkan kedalam fields adalah atribut yang membutuhkan input dari pengguna dalam forms.
+
+### Membuat halaman forms dengan membuat berkas `./main/templates/create_product_entry.html`
+```py
+{% extends 'base.html' %} 
+{% block content %}
+<h1>Add New Product</h1>
+
+<form method="POST">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+    <tr>
+      <td></td>
+      <td>
+        <input type="submit" value="Add Product Entry" />
+      </td>
+    </tr>
+  </table>
+</form>
+
+{% endblock %}
+```
+Disini digunakan `csrf_token` untuk mencegah serangan Cross Site Request Forgery. `form.as_table` akan menunjukkan forms yang dikirim dalam context dari `views.py`
+
+### Mengubah isi dari `views.py`
+```py
+from django.shortcuts import render, redirect
+from main.forms import ProductForm
+from main.models import Product
+from django.http import HttpResponse
+from django.core import serializers
+
+# Create your views here.
+
+def show_main(request):
+    product_entries = Product.objects.all()
+
+    context = {
+        'app' : 'Chicken-Daddy',
+        'name': 'Christian Raphael Heryanto',
+        'class': 'PBP D',
+        'products': product_entries
+    }
+
+    return render(request, "main.html", context)
+
+def create_product_entry(request): 
+    form = ProductForm(request.POST or None) # Jika bukan POST request, kembalikan None
+
+    if form.is_valid() and request.method == "POST": # Memastikan data yang dikirimkan valid
+        form.save()
+        return redirect('main:show_main') # Kembali ke main
+    
+    context = {'form' : form}
+    return render(request, "create_product_entry.html", context)
+
+def show_xml(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def show_xml_by_id(request, id):
+    data = Product.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json_by_id(request, id):
+    data = Product.objects.filter(pk=id)
+    return HttpResponse(serializers.seriali
+```
+
+`create_product_entry`  hanya menerima POST _request_. Setiap _method_ yang dibuat dalam `views.py` mengambil _objects_ model `Products` yang telah dibuat dari database, sehingga membutuhkan `Product.objects`. _Method_ `show_xml`, `show_json`, `show_xml_by_id`, dan `show_json_by_id` membutuhkan _serializer_ untuk mengubah data menjadi format tertentu (JSON & XML).
+### Mengubah `./main/urls.py`
+```py
+from django.urls import path
+from main.views import show_main, create_product_entry, show_xml, show_json, show_xml_by_id, show_json_by_id
+
+
+
+app_name = 'main'
+
+urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('create-product-entry', create_product_entry, name='create_product_entry'),
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'),
+    path('xml/<str:id>', show_xml_by_id, name='show_xml_by_id'),
+    path('json/<str:id>', show_json_by_id, name='show_json_by_id'),
+]
+```
+Pada langkah ini, dibuat URL (Unicode Resource Locator) untuk setiap _method_ yang terdapat dalam `views.py`, kita buat _url patterns_.  Hal tersebut dilakukan agar setiap _method_ pada `views.py` dapat di akses melalui URL. 
+
+![image](https://github.com/user-attachments/assets/7fbb46bc-76c4-4789-a61b-fcd53f944306)
+![image](https://github.com/user-attachments/assets/2a25539d-6c9e-4867-99f1-8804065a518a)
+![image](https://github.com/user-attachments/assets/688e99f8-db8c-4614-98d1-e64ca20f71d9)
+![image](https://github.com/user-attachments/assets/5c3c66d3-11be-4279-8fa4-13805a51ce0b)
+</details>
