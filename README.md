@@ -132,7 +132,7 @@ git add .
 git commit -m "init commit"
 git branch -M main
 git push -u origin main
-git bracnh -M master
+git branch -M master
 git push pws master
 ```
 ## Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
