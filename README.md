@@ -203,7 +203,7 @@ XML (eXtensible Markup Language) & JSON (JavaScript Object Notation) memiliki ke
 <br />
 
 ## Jelaskan fungsi dari method `is_valid()` pada form Django dan mengapa kita membutuhkan method tersebut?
-Method `is_valid()` pada Forms digunakan untuk melakukan validasi terhadap data yang dikirimkan. Melalui validasi, developer mengurangi beberapa tahap untuk menjaga keberlangsungan web, diantaranya validasi error dan data cleaning (Proses memperbaiki/meghilangkan data-data yang salah).
+Method `is_valid()` pada Forms digunakan untuk melakukan validasi terhadap data yang dikirimkan. Melalui validasi, developer mengurangi beberapa tahap untuk menjaga keberlangsungan web, diantaranya validasi error dan data cleaning (Proses memperbaiki/menghilangkan data-data yang salah).
 
 <br />
 
