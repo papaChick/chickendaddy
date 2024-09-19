@@ -174,7 +174,8 @@ Django merupakan sebuah framework dalam bahasa pemrograman Python. Python dikena
 ## Mengapa model pada Django disebut sebagai ORM?
 Model pada Django disebut sebagai ORM (Object Relational Model) sebab Django menghubungkan objek-objek model dan tabel di relational database.
 </details>
-<details open>
+
+<details>
     <summary><h2>Tugas Individu 3</h2></summary>
 
 ## Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
@@ -407,4 +408,49 @@ Pada langkah ini, dibuat URL (Unicode Resource Locator) untuk setiap _method_ ya
 ![image](https://github.com/user-attachments/assets/2a25539d-6c9e-4867-99f1-8804065a518a)
 ![image](https://github.com/user-attachments/assets/688e99f8-db8c-4614-98d1-e64ca20f71d9)
 ![image](https://github.com/user-attachments/assets/5c3c66d3-11be-4279-8fa4-13805a51ce0b)
+</details>
+
+<details open>
+    <summary><h2>Tugas Individu 4</h2></summary>
+
+## Apa perbedaan antara `HttpResponseRedirect()` dan `redirect()`
+
+_Method_ `HttpResponseRedirect()` hanya dapat memiliki `url` sebagai argumen pertama. Sedangkan `redirect()` akan mengembalikan `HttpResponseRedirect` yang mampu menerima argumen menerima `model`, `view`, or `url`.
+
+Sumber:
+- https://docs.djangoproject.com/en/5.1/topics/http/shortcuts/
+- https://docs.djangoproject.com/en/5.1/ref/request-response/#django.http.HttpResponseRedirect
+
+## Jelaskan cara kerja penghubungan model `MoodEntry` dengan `User`!
+
+`MoodEntry` diberikan attribute ForeignKey `User`, sehingga terbuat hubungan _Many-to-one_. `User` disini adalah models _package_ `django.contrib.auth.models`. Untuk melakukan _filtering_ pada object `MoodEntry`, cukup menambahkan kode berikut pada _models_:
+```py
+class MoodEntry(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+```
+
+Sumber:
+- https://docs.djangoproject.com/en/4.2/topics/db/examples/many_to_one/
+
+## Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.
+
+_Authentication_ adalah proses verifikasi identitas seorang _user_, sedangkan _Authorization_ adalah proses verifikasi hak akses seorang _user_. Django mengimplementasikan kedua konsep ini dengan cara yang berbeda. _Authentication_ pada Django diimplementasikan melalui `User` _models_ dan _method_ `login`, `logout`, `authenticate` bawaan django. _Authorization_ pada Django diimplementasikan melalui _decorators_ seperti `login_required()` yang bertujuan untuk membatasi akses _user_ hanya untuk yang terautentikasi. 
+
+## Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?
+
+Django mengingat pengguna yang telah login melalui _Cookies_ dan _Session_. _Cookies_ merupakan data yang diassign pada _browser user_. 
+
+Saat register, _server_ akan menyimpan `SESSION ID` dan mengassignnya kepada _browser user_ dalam bentuk _Cookies_. Kemudian, _user_ yang telah login akan memiliki _Cookie_ tersebut dalam browser. Selama _Cookie_ masih berada dalam _browser_ (belum expire atau logout), setiap request akan mengandung _Cookie_ tersebut. Lalu, _Cookie_ diterima _server_ dan akan dilakukan _lookup_ terhadap `SESSION ID` yang terkandung. Jika valid, maka akan dianggap login. Saat _user_ logout, _Cookies_ akan dihapus dari _browser user_, namun tetap tersimpan dalam _server_.
+
+![image](https://github.com/user-attachments/assets/946dbe53-b358-47db-bd58-2025990638fc)
+
+Terdapat beberapa kegunaan lain untuk cookies, yaitu:
+- Menyimpan Preferensi _User_
+- Melacak Aktivitas _User_
+- Fitur 'Remember Me' pada login
+
+Walau demikian, tidak semua _cookies_ aman digunakan. Contohnya adalah _cookies_ yang tidak diberi atribut `HttpOnly`. _Cookie_ tersebut rentan terhadap serangan XSS (_Cross Site Scripting_) sebab dapat diambil menggunakan Javascript. Mungkin terdengar biasa saja, namun perlu diketahui bahwa _cookies_ dapat memberikan akses secara langsung terhadap suatu web tanpa mengharuskan seseorang untuk login terlebih dahulu. Sehingga, data-data penting dan informasi pribadi dapat diakses oleh orang yang memiliki `cookie` kita. 
+
+
+## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 </details>
