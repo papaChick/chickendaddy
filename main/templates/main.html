@@ -22,10 +22,15 @@
   {% endfor %}
 </table>
 {% endif %}
-
+<h5>Sesi terakhir login: {{ last_login }}</h5>
 <br />
 
 <a href="{% url 'main:create_product_entry' %}">
   <button>Add Product Entry</button>
+</a>
+
+<!-- logout button to url /logout-->
+<a href="{% url 'main:logout' %}">
+  <button>Logout</button>
 </a>
 {% endblock content %}
