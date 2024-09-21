@@ -452,5 +452,216 @@ Terdapat beberapa kegunaan lain untuk cookies, yaitu:
 Walau demikian, tidak semua _cookies_ aman digunakan. Contohnya adalah _cookies_ yang tidak diberi atribut `HttpOnly`. _Cookie_ tersebut rentan terhadap serangan XSS (_Cross Site Scripting_) sebab dapat diambil menggunakan Javascript. Mungkin terdengar biasa saja, namun perlu diketahui bahwa _cookies_ dapat memberikan akses secara langsung terhadap suatu web tanpa mengharuskan seseorang untuk login terlebih dahulu. Sehingga, data-data penting dan informasi pribadi dapat diakses oleh orang yang memiliki `cookie` kita. 
 
 
-## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).  
+### Mengimplementasikan _authentication_ pada `views`
+- **Menambahkan imports**
+    ```py
+    from django.contrib.auth.decorators import login_required
+    from django.shortcuts import render, redirect
+    from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+    from django.contrib.auth import authenticate, login, logout
+    from django.contrib import messages
+    from django.http import HttpResponse, HttpResponseRedirect
+    from django.core import serializers
+    from django.urls import reverse
+    from main.forms import ProductForm
+    from main.models import Product
+    import datetime
+    ```
+- **Menambahkan _method_ `login`, `logout`, `register`**
+    ```python
+    def register(request):
+        form = UserCreationForm()
+    
+        if request.method == "POST":
+            form = UserCreationForm(request.POST)
+            if form.is_valid():    # Menyimpan data dari form jika valid
+                form.save()
+                messages.success(request, 'Your account has been successfully created!')
+                return redirect('main:login')
+        context = {'form':form}
+        return render(request, 'register.html', context)
+    
+    def login_user(request):
+        if request.method == 'POST':
+            form = AuthenticationForm(data=request.POST)
+    
+            if form.is_valid():    # Ambil user, lalu login sebagai user
+                user = form.get_user()
+                login(request, user)
+                response = HttpResponseRedirect(reverse("main:show_main"))
+                response.set_cookie('last_login', str(datetime.datetime.now())) # Set cookie last_login
+                return response
+    
+        else:
+            form = AuthenticationForm(request)
+        context = {'form': form}
+        return render(request, 'login.html', context)
+
+
+    def logout_user(request):
+        logout(request)
+        response = HttpResponseRedirect(reverse('main:login'))
+        response.delete_cookie('last_login')
+        return response
+    ```
+
+    django.contrib.auth memiliki model User yang dimana memiliki fields sebagai berikut:
+    - username
+    - first_name
+    - last_name
+    - email
+    - password
+    - groups
+    - user_permissions
+    - is_staff
+    - is_active
+    - is_superuser
+    - last_login
+    - date_joined  
+    https://docs.djangoproject.com/en/5.1/ref/contrib/auth/
+
+- **Mengganti `show_main` dan `create_product_entry` untuk menyesuaikan**
+    ```py
+    def show_main(request):
+        product_entries = Product.objects.filter(user=request.user)    # Filter sesuai user yang memberi request
+    
+        context = {
+            'app' : 'Chicken-Daddy',
+            'name': request.user.username,    # Menunjukkan username user yang membuat request pada field name
+            'class': 'PBP D',
+            'products': product_entries,
+            'last_login': request.COOKIES['last_login'],    # Menunjukkan last_login yang diambil dari cookie
+        }
+    
+        return render(request, "main.html", context)
+    
+    def create_product_entry(request):
+        form = ProductForm(request.POST or None)
+    
+        if form.is_valid() and request.method == "POST":
+            product_entry = form.save(commit=False)    # mendapatkan model
+            product_entry.user = request.user    # menambahkan data terhadap model tersebut
+            product_entry.save()    # menyimpan model
+            return redirect('main:show_main')
+        
+        context = {'form' : form}
+        return render(request, "create_product_entry.html", context)
+    ```
+
+- **membuat templates `login.html` & `register.html`**
+    ```HTML
+    <!-- login.html -->
+    {% extends 'base.html' %}
+    {% block meta %}
+    <title>Login</title>
+    {% endblock meta %}
+    
+    {% block content %}
+    <div class="login">
+      <h1>Login</h1>
+    
+      <form method="POST" action="">
+        {% csrf_token %}
+        <table>
+          {{ form.as_table }}
+          <tr>
+            <td></td>
+            <td><input class="btn login_btn" type="submit" value="Login" /></td>
+          </tr>
+        </table>
+      </form>
+    
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} Don't have an account yet?
+      <a href="{% url 'main:register' %}">Register Now</a>
+    </div>
+    
+    {% endblock content %}
+    ```
+    ```html
+    <!-- register.html -->
+    {% extends 'base.html' %}
+    
+    {% block meta %}
+    <title>Register</title>
+    {% endblock meta %}
+    
+    {% block content %}
+    
+    <div class="login">
+      <h1>Register</h1>
+    
+      <form method="POST">
+        {% csrf_token %}
+        <table>
+          {{ form.as_table }}
+          <tr>
+            <td></td>
+            <td><input type="submit" name="submit" value="Daftar" /></td>
+          </tr>
+        </table>
+      </form>
+    
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    
+    {% endblock content %}
+    ```
+- **Menghubungkan `Product` dan `User` melalui `models.py`**
+    ```py
+    from django.db import models
+    from django.contrib.auth.models import User
+    import uuid
+    
+    # Create your models here.
+    class Product(models.Model):
+        id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+        user = models.ForeignKey(User, on_delete=models.CASCADE)    # Menambah line ini
+        name = models.CharField(max_length=255)
+        price = models.IntegerField()
+        description = models.TextField()
+    
+        def __str__(self):
+            return self.name
+    ```
+### Authorization
+Kita ingin mengharuskan user untuk login sebelum memperlihatkan home. Maka, kita gunakan decorators `@login_required` dari `django.contrib.auth.decorators`. Kita tambahkan decorators ini pada `views.py`, tepatnya pada _method_ `show_main`
+```py
+@login_required(login_url='/login')
+def show_main(request):
+...
+```
+### Finishing
+Buat endpoints url pada `urlpatterns` di `./main/urls.py`
+```py
+from django.urls import path
+from main.views import *
+
+
+app_name = 'main'
+
+urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('create-product-entry', create_product_entry, name='create_product_entry'),
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'),
+    path('xml/<str:id>', show_xml_by_id, name='show_xml_by_id'),
+    path('json/<str:id>', show_json_by_id, name='show_json_by_id'),
+    path('register/', register, name='register'),
+    path('login/', login_user, name='login'),
+    path('logout/', logout_user, name='logout'),
+]
+```
 </details>
