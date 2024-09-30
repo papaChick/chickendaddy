@@ -1,14 +1,7 @@
-asgiref
-certifi
-charset-normalizer
-Django
-django-widget-tweaks
+django
 gunicorn
-idna
-packaging
+whitenoise
 psycopg2-binary
 requests
-sqlparse
-tzdata
 urllib3
-whitenoise
+django-widget-tweaks
