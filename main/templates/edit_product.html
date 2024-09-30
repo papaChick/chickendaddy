@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block meta %}
-<title>Create Product</title>
+<title>Edit Product</title>
 {% endblock meta %}
 
 {% block content %}
@@ -9,7 +9,7 @@
 
 <div class="flex flex-col min-h-screen bg-inherit">
   <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
-    <h1 class="font-header font-medium text-shadow text-xl font-bold text-center mb-2">Create Product</h1>
+    <h1 class="font-header font-medium text-shadow text-xl font-bold text-center mb-2">Edit Product</h1>
 
     <div class="bg-inherit rounded-lg p-6 form-style">
       <form method="POST" class="space-y-6">
@@ -32,7 +32,7 @@
         {% endfor %}
         <div class="flex justify-center mt-6">
           <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-2 focus:ring-offset-2 focus:ring-white transition duration-300">
-            Create Product
+            Save Changes
           </button>
         </div>
       </form>

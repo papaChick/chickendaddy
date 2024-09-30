@@ -1,0 +1,39 @@
+.form-style form input, 
+.form-style form textarea, 
+.form-style form select {
+    appearance: none;
+    border: none;
+    border-bottom: 2px solid #bcbcbc;
+    background-color: inherit;
+    color: white;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0;
+    margin-bottom: 1rem;
+    outline: none;
+    font-size: 0.875rem; /* same as sm:text-sm */
+}
+
+.form-style form input:focus, 
+.form-style form textarea:focus, 
+.form-style form select:focus {
+    outline: none;
+    border-bottom: 2px solid #bcbcbc;
+    border-color: #eab308;
+}
+
+.form-style form input::placeholder, 
+.form-style form textarea::placeholder {
+    color: #bcbcbc;
+}
+
+
+@keyframes shine {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+.animate-shine {
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.3));
+    background-size: 200% 100%;
+    animation: shine 3s infinite;
+}
