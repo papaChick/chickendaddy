@@ -27,7 +27,7 @@ jobs:
 
     - name: Check PWS remote, pull, merge, and push
       env:
-        PWS_URL: ${{ secrets.PWS_URL }}
+        PWS_URL: $PWS_URL
       run: |
           # Check if master branch exists locally
           if ! git show-ref --verify --quiet refs/heads/master; then
