@@ -90,10 +90,10 @@ def logout_user(request):
 
 def edit_product(request, id):
     # Get mood entry berdasarkan id
-    mood = Product.objects.get(pk = id)
+    product = Product.objects.get(pk = id)
 
     # Set mood entry sebagai instance dari form
-    form = ProductForm(request.POST or None, instance=mood)
+    form = ProductForm(request.POST or None, instance=product)
 
     if form.is_valid() and request.method == "POST":
         # Simpan form dan kembali ke halaman awal
@@ -105,8 +105,8 @@ def edit_product(request, id):
 
 def delete_product(request, id):
     # Get mood berdasarkan id
-    mood = Product.objects.get(pk = id)
+    product = Product.objects.get(pk = id)
     # Hapus mood
-    mood.delete()
+    product.delete()
     # Kembali ke halaman awal
     return HttpResponseRedirect(reverse('main:show_main'))
