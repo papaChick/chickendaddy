@@ -410,7 +410,7 @@ Pada langkah ini, dibuat URL (Unicode Resource Locator) untuk setiap _method_ ya
 ![image](https://github.com/user-attachments/assets/5c3c66d3-11be-4279-8fa4-13805a51ce0b)
 </details>
 
-<details open>
+<details>
     <summary><h2>Tugas Individu 4</h2></summary>
 
 ## Apa perbedaan antara `HttpResponseRedirect()` dan `redirect()`
@@ -664,4 +664,209 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
 ]
 ```
+</details>
+<details open>
+    <summary><h2>Tugas Individu 5</h2></summary>
+## Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+Dalam CSS, urutan prioritas pengambilan selector untuk suatu elemen HTML dikenal sebagai _specifity_. Urutan prioritas dari yang tertinggi ke terendah adalah sebagai berikut:
+
+1. _Inline styles_
+Contoh: `<div style="color: red;">...</div>`
+2. _ID selectors_
+Contoh: `#header { ... }`
+3. _Class selectors_, _atribut selectors_, dan _pseudo-class_
+Contoh: `.highlight { ... }`, `[type="text"] { ... }`, `:hover { ... }`
+4. _Element selectors_ dan _pseudo-elements_
+Contoh: `div { ... }`, `::before { ... }`
+5. _Universal selector_
+Contoh: `* { ... }`
+6. _Inherited styles_
+
+Catatan Tambahan:
+
+- Jika dua selector memiliki _specifity_ yang sama, maka _selector_ yang ditulis terakhir dalam file CSS akan digunakan.
+- Penggunaan `!important` akan mengabaikan aturan spesifisitas normal. Tidak disarankan kecuali benar-benar diperlukan.
+- _Proximity_ sebuah elemen terhadap elemen lain yang dirujuk oleh _CSS Selector_ tidak berpengaruh pada _specifity_
+
+Source: [MDN web docs](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity)
+
+## Mengapa _responsive design_ menjadi konsep yang penting dalam pengembangan aplikasi _web_? Berikan contoh aplikasi yang sudah dan belum menerapkan _responsive design_!
+
+_Responsive design_ merupakan konsep dimana _layout_ dan _design_ dibuat untuk menyesuaikan ukuran layar _gadget_ yang berbeda, dari yang besar hingga kecil. Tujuan dari konsep ini adalah untuk memudahkan pengguna dalam menggunakan _web_ dan memuat seluruh informasi agar dapat diakses lebih mudah.
+
+Contoh aplikasi yang sudah menerapkan _responsive design_ adalah scele.cs.ui.ac.id dan siak.ui.ac.id.
+Scele memiliki _navigation bar_ yang berskala dan menyesuaikan ukuran layar. Ditambah, saat ukuran layar kecil _navigation bar_ scele menjadi _dropdown_. Perubahan tersebut memungkinkan scele untuk mencapai ukuran yang sesuai dan menyisakan ruang yang cukup luas untuk _content_ yang disajikan. Dengan demikian, scele dapat dikategorikan sebagai _web_ yang menerapkan _responsive design_.
+
+Siak memiliki skala yang berubah sesuai dengan rasio kecilnya layar yang digunakan. Namun, tidak ada perubahan selain skala pada fitur-fitur Siak; _font semakin kecil_, _navigation bar_ semakin kecil. Hal ini tentu menyulitkan pengguna mobile sebab mereka terkena restriksi sehingga tidak dapat menggunakan siak secara maksimal. Dengan demikian, siak dapat dikategorikan sebagai _web_ yang tidak menerapkan _responsive design_, atau yang kerap disebut dengan "_unresponsive design_".
+
+## Jelaskan perbedaan antara _margin_, _border_, dan _padding_, serta cara untuk mengimplementasikan ketiga hal tersebut!
+
+_Margin_ merupakan jaraak antara titik terluar elemen dengan elemen-elemen lain.
+```CSS
+margin: 10px;                   /* Semua sisi */
+margin: 5px 10px 15px 20px;     /* Atas, kanan, bawah, kiri */
+margin: 10px 20px;              /* Atas-bawah, kiri-kanan */
+
+margin-top: 10px;               /* Individu */
+margin-right: 20px;
+margin-bottom: 15px;
+margin-left: 5px;
+```
+
+_Border_ merupakan garis yang mengelilingi konten dan _padding_ elemen
+```CSS
+border: 1px solid black;        /* Shorthand */
+
+border-width: 1px;              /* Individu */
+border-style: solid;
+border-color: 
+
+border-top: 2px dashed red;     /* Sisi spesifik */
+```
+
+_Padding_ merupakan jarak antara titik terluar elemen dengan konten.
+```CSS
+padding: 10px;                  /* Semua sisi */
+
+padding: 5px 10px 15px 20px;    /* Atas, kanan, bawah, kiri */
+
+padding: 10px 20px;             /* Atas-bawah, kiri-kanan */
+
+padding-top: 10px;              /* Individu */
+padding-right: 20px;
+padding-bottom: 15px;
+padding-left: 5px;
+```
+
+## Jelaskan konsep _flex box_ dan _grid layout_ beserta kegunaannya!
+_Flex box_ merupakan metode _layout_ yang mengatur elemen didalamnya dalam kolom atau baris.
+Kegunaan dari _Flex box_ pada umumnya adalah sebagai berikut:
+- Membuat _layout_ yang responsif dan fleksibel
+- Mendistribusikan ruang di antara elemen-elemen dalam sebuah container
+- Mengatur _alignment_ vertikal dengan mudah
+
+_Grid layout_ merupakan metode _layout_ yang mengatur elemen didalamnya dalam kolom dan baris.
+Kegunaan dari _Grid layour_ pada umumnya adalah sebagai berikut:
+- Membuat layout kompleks dengan mudah
+- Mengatur tata letak dalam baris dan kolom sekaligus
+
+
+## Jelaskan bagaimana cara kamu mengimplementasikan _checklist_ di atas secara _step-by-step_ (bukan hanya sekadar mengikuti tutorial)!
+### Implementasikan fungsi untuk menghapus dan mengedit product.
+- **Buat _method delete_ dan _update_ pada `views.py`**
+  ```python
+  def edit_product(request, id):
+    # Get product entry berdasarkan id
+    product = Product.objects.get(pk = id)
+
+    # Set product entry sebagai instance dari form
+    form = ProductForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
+
+    def delete_product(request, id):
+        # Get product berdasarkan id
+        product = Product.objects.get(pk = id)
+        # Hapus product
+        product.delete()
+        # Kembali ke halaman awal
+        return HttpResponseRedirect(reverse('main:show_main'))
+    ```
+- **Buat _template_ untuk _update_**
+
+- **Buat `urlpattern` untuk masing-masing _method_**
+
+### Kustomisasi desain pada template HTML
+- **Menambahkan _package_ `django-widget-tweaks`**
+  ```
+    pip install django-widget tweaks
+  ```
+  _Package_ ini kedepannya akan digunakan untuk menambahkan _class_ pada _template variable_, bersifat _optional_ namun sangat membantu dalam melakukan _styling_ pada _web_.
+  Tidak lupa untuk mengaktivasi env & menambahkannya ke requirements.txt.
+  
+  Tambahkan juga dalam `settings.py`:
+  ```python
+  ...
+  INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'widget_tweaks',  # Baris ini
+    'main',
+  ]
+  ...
+  ```
+  
+- **Membuat menghubungkan _Static_**
+  Buat direktori `static` dengan 2 subdirektori yaitu `css` & `image`.Setelah itu masuk kedalam `setting.py` dan tambahkan baris baris berikut:
+  ```python
+  STATIC_URL = '/static/'
+    if DEBUG:
+        STATICFILES_DIRS = [
+            BASE_DIR / 'static' # merujuk ke /static root project pada mode development
+        ]
+    else:
+        STATIC_ROOT = BASE_DIR / 'static' # merujuk ke /static root project pada mode production
+  ```
+
+- **Menambahkan styles (Tailwind CSS & Google Fonts)**
+  Dalam `templates/base.html`, tambahkan:
+  ```HTML
+  {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% block meta %} {% endblock meta %}
+         // Baris ini untuk CSS
+        <script src="https://cdn.tailwindcss.com"></script>
+        // Baris untuk custom Font
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        // Untuk menambahkan global css
+        <link rel="stylesheet" href="{% static 'css/global.css' %}"/>
+        <script>
+          tailwind.config = {
+            theme: {
+              extend: {
+                fontFamily: {
+                  'header': ['"Press Start 2P"', 'cursive'],  // Custom font
+                },
+              }
+            }
+          }
+        </script>
+        <style>
+          .text-shadow {
+                text-shadow: 
+                    4px 4px 0 rgba(20, 20, 20, 0.7),    /* Offset shadow further down and right */
+                    3px 3px 0 rgba(0, 0, 0, 0.5),       /* Slightly less offset shadow */
+                    2px 2px 0 rgba(0, 0, 0, 0.3);       /* Closer shadow for depth */
+            }
+      </style>
+      <title>{% block title %} {% endblock title %}</title>
+      </head>
+      <body class="bg-neutral-800 text-neutral-300 font-mono">
+        {% block content %} {% endblock content %}
+      </body>
+    </html>
+  ```
+[!NOTE]
+- Kustomisasi dilakukan dengan sekreatif mungkin menggunakan Tailwind CSS melalui `templates`
+- Responsiveness dilakukan dengan `lg:`, `md:`, dan `sm:` milik Tailwind CSS dan `flex-box`
+- Conditional dilakukan dengan django _template tags_ (`{% ... %}`)
+- `{% load 'static' %}` diperlukan untuk memasukkan static (gambar & global.css)
+- `{% load 'widget-tweaks'}` diperlukan untuk memasukkan class pada django _template variables_ (`{{ ... }}`)
+- `{% include 'navbar.html '%}` diperlukan untuk memasukkan navbar dari `./templates/navbar`
+- Pergantian antara _Mobile menu_ dan _Desktop menu_ dilakukan dengan script dan `hidden`. _Mobile menu_ dibuat agar hanya muncul saat layar kecil.
 </details>
