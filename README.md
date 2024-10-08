@@ -966,7 +966,7 @@ Javascript menambahkan logika kepada aplikasi _web_ yang dibangun. Javascript me
 
 ## Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST?
 
-Penggunaan `@csrf_exempt` membuat Django tidak perlu melakukan pengecekan keberadaan `csrf_token` pada `POST` _request_. Tujuan utama dari hal tersebut adalah untuk memudahkan pengimplementasian AJAX pada aplikasi _web_. Pengorbanan dari pengimplementasian AJAX yang lebih mudah adalah keretanan _web_ terhadap serangan CSRF. Menurut berbagai sumber, terdapat cara-cara yang dapat dilakukan untuk tetap mengimplentasikan `csrf_token` pada AJAX _request_ menggunakan Django. Proteksi terhadap `csrf_token` sangat dianjurkan, kecuali _developer_ yang terkait mengetahui konsekuensi yang diambil dengan meletakan `@csrf_exempt`.
+Penggunaan `@csrf_exempt` membuat Django tidak perlu melakukan pengecekan keberadaan `csrf_token` pada `POST` _request_. Tujuan utama dari hal tersebut adalah untuk memudahkan pengimplementasian AJAX pada aplikasi _web_. Konsekuensi dari implementasi AJAX yang lebih mudah adalah keretanan _web_ terhadap serangan CSRF. Menurut berbagai sumber, terdapat cara-cara yang dapat dilakukan untuk tetap mengimplentasikan `csrf_token` pada AJAX _request_ menggunakan Django. Proteksi terhadap `csrf_token` sangat dianjurkan, kecuali _developer_ terkait mengetahui konsekuensi yang diambil dengan meletakan `@csrf_exempt`.
 
 Sumber: [DRF Docs: AJAX CSRF CORS](https://www.django-rest-framework.org/topics/ajax-csrf-cors/#:~:text=In%20order%20to%20make%20AJAX,described%20in%20the%20Django%20documentation.), [Django: CSRF Protection docs](https://docs.djangoproject.com/en/5.1/howto/csrf/#using-csrf-protection-with-ajax)
 
