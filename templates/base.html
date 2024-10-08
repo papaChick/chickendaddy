@@ -6,28 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% block meta %} {% endblock meta %}
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/global.css' %}"/>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              'header': ['"Press Start 2P"', 'cursive'],
+              header: ['"Press Start 2P"', "cursive"],
             },
-          }
-        }
-      }
+          },
+        },
+      };
     </script>
     <style>
       .text-shadow {
-            text-shadow: 
-                4px 4px 0 rgba(20, 20, 20, 0.7), 
-                3px 3px 0 rgba(0, 0, 0, 0.5), 
-                2px 2px 0 rgba(0, 0, 0, 0.3); 
-        }
-  </style>
-  <title>{% block title %} {% endblock title %}</title>
+        text-shadow: 4px 4px 0 rgba(20, 20, 20, 0.7),
+          3px 3px 0 rgba(0, 0, 0, 0.5), 2px 2px 0 rgba(0, 0, 0, 0.3);
+      }
+    </style>
+    <title>{% block title %} {% endblock title %}</title>
   </head>
   <body class="bg-neutral-800 text-neutral-300 font-mono">
     {% block content %} {% endblock content %}
