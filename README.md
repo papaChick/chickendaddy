@@ -962,7 +962,7 @@ Javascript menambahkan logika kepada aplikasi _web_ yang dibangun. Javascript me
 
 ## Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?
 
-`fetch()` merupakan _asynchronous method_, yaitu _method_ yang berjalan secara paralel bersamaan dengan fungsi-fungsi yang lainnya. Namun, perlu diingat bahwa sebelum data `fetch()` dapat diproses, server harus menunggu hingga data tersebut diterima. Sehingga, dibutuhkan `await` bertugas untuk menghentikan eksekusi `async` hingga data dari `fetch()` diterima. Tanpa `await`, kode setelah `await` akan dijalankan tanpa menunggu data dari `fetch()`. Hal ini dapat menimbulkan error/bug yang tidak diinginkan sehingga **harus** menggunakan `await`.
+`fetch()` merupakan _asynchronous method_, yaitu _method_ yang berjalan secara paralel bersamaan dengan fungsi-fungsi yang lainnya. Namun, perlu diingat bahwa sebelum data `fetch()` dapat diproses, server harus menunggu hingga data tersebut diterima. Sehingga, dibutuhkan `await` yang bertugas untuk menghentikan eksekusi `async` hingga data dari `fetch()` diterima. Tanpa `await`, kode setelah `await` akan dijalankan tanpa menunggu data dari `fetch()`. Hal ini dapat menimbulkan error/bug yang tidak diinginkan sehingga **harus** menggunakan `await`.
 
 ## Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST?
 
@@ -980,7 +980,7 @@ Sanitasi = Upaya membersihkan input data dari pengguna.
 ## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
 
 Disclaimer:  
-pada Tugas Individu 6 saya memutuskan untuk mengimplementasikan javascript secara _external_ (dan sedikit secara _embedded_ juga).
+Pada Tugas Individu 6, saya memutuskan untuk mengimplementasikan javascript secara _external_ (dan sedikit secara _embedded_ juga).
 
 ### Setup
 
