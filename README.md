@@ -962,11 +962,11 @@ Javascript menambahkan logika kepada aplikasi _web_ yang dibangun. Javascript me
 
 ## Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?
 
-`fetch()` merupakan _asynchronous method_, yaitu _method_ yang berjalan secara paralel bersamaan dengan fungsi-fungsi yang lainnya. Namun, perlu diingat bahwa sebelum data `fetch()` dapat diproses, server harus menunggu hingga data tersebut diterima. Sehingga, dibutuhkan `await` bertugas untuk menghentikan eksekusi `async` hingga data dari `fetch()` diterima. Tanpa `await`, kode setelah `await` akan dijalankan tanpa menunggu data dari `fetch()`. Hal ini dapat menimbulkan error/bug yang tidak diinginkan sehingga **harus** menggunakan `await`.
+`fetch()` merupakan _asynchronous method_, yaitu _method_ yang berjalan secara paralel bersamaan dengan fungsi-fungsi yang lainnya. Namun, perlu diingat bahwa sebelum data `fetch()` dapat diproses, server harus menunggu hingga data tersebut diterima. Sehingga, dibutuhkan `await` yang bertugas untuk menghentikan eksekusi `async` hingga data dari `fetch()` diterima. Tanpa `await`, kode setelah `await` akan dijalankan tanpa menunggu data dari `fetch()`. Hal ini dapat menimbulkan error/bug yang tidak diinginkan sehingga **harus** menggunakan `await`.
 
 ## Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST?
 
-Penggunaan `@csrf_exempt` membuat Django tidak perlu melakukan pengecekan keberadaan `csrf_token` pada `POST` _request_. Tujuan utama dari hal tersebut adalah untuk memudahkan pengimplementasian AJAX pada aplikasi _web_. Pengorbanan dari pengimplementasian AJAX yang lebih mudah adalah keretanan _web_ terhadap serangan CSRF. Menurut berbagai sumber, terdapat cara-cara yang dapat dilakukan untuk tetap mengimplentasikan `csrf_token` pada AJAX _request_ menggunakan Django. Proteksi terhadap `csrf_token` sangat dianjurkan, kecuali _developer_ yang terkait mengetahui konsekuensi yang diambil dengan meletakan `@csrf_exempt`.
+Penggunaan `@csrf_exempt` membuat Django tidak perlu melakukan pengecekan keberadaan `csrf_token` pada `POST` _request_. Tujuan utama dari hal tersebut adalah untuk memudahkan pengimplementasian AJAX pada aplikasi _web_. Konsekuensi dari implementasi AJAX yang lebih mudah adalah keretanan _web_ terhadap serangan CSRF. Menurut berbagai sumber, terdapat cara-cara yang dapat dilakukan untuk tetap mengimplentasikan `csrf_token` pada AJAX _request_ menggunakan Django. Proteksi terhadap `csrf_token` sangat dianjurkan, kecuali _developer_ terkait mengetahui konsekuensi yang diambil dengan meletakan `@csrf_exempt`.
 
 Sumber: [DRF Docs: AJAX CSRF CORS](https://www.django-rest-framework.org/topics/ajax-csrf-cors/#:~:text=In%20order%20to%20make%20AJAX,described%20in%20the%20Django%20documentation.), [Django: CSRF Protection docs](https://docs.djangoproject.com/en/5.1/howto/csrf/#using-csrf-protection-with-ajax)
 
@@ -980,7 +980,7 @@ Sanitasi = Upaya membersihkan input data dari pengguna.
 ## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
 
 Disclaimer:  
-pada Tugas Individu 6 saya memutuskan untuk mengimplementasikan javascript secara _external_ (dan sedikit secara _embedded_ juga).
+Pada Tugas Individu 6, saya memutuskan untuk mengimplementasikan javascript secara _external_ (dan sedikit secara _embedded_ juga).
 
 ### Setup
 
